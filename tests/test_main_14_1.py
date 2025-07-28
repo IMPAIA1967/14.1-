@@ -1,5 +1,5 @@
-import pytest
 from src.main_14_1 import Product, Category
+
 
 class TestProduct:
     """Проверка инициализации Product."""
@@ -41,7 +41,4 @@ class TestCategory:
         # Создаем вторую категорию
         Category("Кат 2", "Описание", [prod1, prod2])
         assert Category.category_count == 2
-        assert Category.product_count == 1 + 2
-
-
-
+        assert Category.product_count == 3
