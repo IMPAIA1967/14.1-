@@ -1,4 +1,5 @@
-from src.main_14_1 import Product, Category
+from src.main_14_1_product import Product
+from src.main_14_1_category import Category
 
 
 class TestProduct:

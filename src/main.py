@@ -1,38 +1,5 @@
-from typing import List
-
-
-class Product:
-    """Описание продукта."""
-    name: str
-    description: str
-    price: float
-    quantity: int
-
-    def __init__(self, name: str, description: str, price: float, quantity: int):
-        """Инициализация объекта продукта."""
-        self.name = name
-        self.description = description
-        self.price = price
-        self.quantity = quantity
-
-
-class Category:
-    """Описание категории продуктов."""
-    category_count = 0  # Сколько создано категорий
-    product_count = 0   # Сколько всего товаров среди всех категорий
-    name: str
-    description: str
-    products: List[Product]
-
-    def __init__(self, name: str, description: str, products: List[Product]):
-        """Инициализация объекта категории."""
-        self.name = name
-        self.description = description
-        self.products = products
-
-        Category.category_count += 1            # Новая категория создана
-        Category.product_count += len(products)  # Новые товары добавлены
-
+from src.main_14_1_product import Product
+from src.main_14_1_category import Category
 
 if __name__ == "__main__":
     product1 = Product(
@@ -87,6 +54,7 @@ if __name__ == "__main__":
         "станет вашим другом и помощником",
         [product4]
     )
+
 
     # print(category2.name)
     # print(category2.description)
