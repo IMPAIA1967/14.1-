@@ -43,3 +43,44 @@ class TestCategory:
         Category("Кат 2", "Описание", [prod1, prod2])
         assert Category.category_count == 2
         assert Category.product_count == 3
+
+
+class TestProductAdditional:
+    """Дополнительные тесты для Product."""
+
+    def test_price_setter(self):
+        """Тест изменения цены через сеттер."""
+        p = Product("Телефон", "Описание", 1000, 5)
+        p.price = 1200
+        assert p.price == 1200
+
+    def test_negative_price(self):
+        """Тест на отрицательную цену."""
+        p = Product("Телефон", "Описание", 1000, 5)
+        p.price = -500  # Должно остаться 1000 и вывести сообщение об ошибке
+        assert p.price == 1000
+
+
+class TestCategoryAdditional:
+    """Дополнительные тесты для Category."""
+
+    def setup_method(self):
+        """Сброс счётчиков перед каждым тестом."""
+        Category.category_count = 0
+        Category.product_count = 0
+
+    def test_empty_category(self):
+        """Тест создания пустой категории."""
+        cat = Category("Пустая", "Категория без товаров")
+        assert len(cat.products) == 0
+        assert Category.category_count == 1
+        assert Category.product_count == 0
+
+    def test_add_product(self):
+        """Тест добавления товара в категорию."""
+        cat = Category("Техника", "Электроника")
+        p = Product("Планшет", "Описание", 500, 3)
+        cat.add_product(p)
+        assert len(cat.products) == 1
+        assert Category.category_count == 1
+        assert Category.product_count == 1
