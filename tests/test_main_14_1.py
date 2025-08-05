@@ -1,3 +1,5 @@
+
+
 from src.main_14_1_product import Product
 from src.main_14_1_category import Category
 
@@ -85,3 +87,29 @@ class TestCategoryAdditional:
         assert Category.category_count == 1
         assert Category.product_count == 1
 
+    def test_product_addition(self):
+        """Тестирование сложения двух продуктов"""
+        # Создаем тестовые продукты
+        product1 = Product("Телефон", "Смартфон", 10000, 5)  # 10000 * 5 = 50000
+        product2 = Product("Ноутбук", "Игровой", 50000, 2)  # 50000 * 2 = 100000
+
+        # Проверяем сложение
+        assert product1 + product2 == 150000  # 50000 + 100000
+        assert product2 + product1 == 150000
+
+    def test_product_str_representation(self):
+        """Тестирование строкового представления продукта"""
+        product = Product("Телефон", "Смартфон", 25000, 15)
+        assert str(product) == "Телефон, 25000 руб. Остаток: 15 шт."
+
+    def test_category_str_representation(self):
+        """Тестирование строкового представления категории"""
+        # 1. Создаем тестовые продукты
+        product1 = Product("Телефон", "Смартфон", 25000, 10)
+        product2 = Product("Ноутбук", "Игровой", 50000, 5)
+
+        # 2. Создаем категорию с этими продуктами
+        category = Category("Электроника", "Техника", [product1, product2])
+
+        # 3. Проверяем строковое представление
+        assert str(category) == "Электроника, количество продуктов: 15 шт."
