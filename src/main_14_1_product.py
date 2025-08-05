@@ -21,6 +21,14 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        """Строковое представление продукта."""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        """Вычисление стоимости всех товаров на складе."""
+        return (self.price * self.quantity) + (other.price * other.quantity)
+
     @property
     def price(self):
         """Возвращает текущую цену товара."""
@@ -48,6 +56,7 @@ class Product:
         else:
             self.__price = value
 
+
     @classmethod
     def new_product(cls, product_data: dict):
         """
@@ -65,3 +74,4 @@ class Product:
             price=product_data['price'],
             quantity=product_data['quantity']
         )
+

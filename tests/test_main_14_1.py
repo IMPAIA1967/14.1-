@@ -84,3 +84,4 @@ class TestCategoryAdditional:
         assert len(cat.products) == 1
         assert Category.category_count == 1
         assert Category.product_count == 1
+

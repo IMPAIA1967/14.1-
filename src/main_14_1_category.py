@@ -20,6 +20,12 @@ class Category:
         Category.category_count += 1  # Новая категория создана
         Category.product_count += len(self.__products)  # Новые товары
 
+    def __str__(self):
+        total_quantity = 0
+        for product in self.__products:
+            total_quantity += product.quantity
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
     def add_product(self, product: Product) -> None:
         """Добавляет товар в категорию."""
         if not isinstance(product, Product):
