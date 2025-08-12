@@ -21,6 +21,16 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __add__(self, other):
+        """
+        Сложение товаров с проверкой совместимости типов.
+        Возвращает общую стоимость товаров одного типа
+        """
+        if not isinstance(other, self.__class__):
+            raise TypeError(
+                f"Нельзя складывать товары разных типов: {self.__class__.__name__} и {other.__class__.__name__}")
+        return (self.price * self.quantity) + (other.price * other.quantity)
+
     def __str__(self):
         """Строковое представление продукта."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
@@ -75,3 +85,52 @@ class Product:
             quantity=product_data['quantity']
         )
 
+class Smartphone(Product):
+    """Класс для представления смартфонов"""
+
+    def __init__(self, name: str, description: str, price: float, quantity: int,
+                 efficiency: str, model: str, memory: int, color: str):
+        """
+                Инициализация экземпляра класса Smartphone
+
+                Args:
+                    efficiency: Производительность процессора
+                    model: Модель смартфона
+                    memory: Объем встроенной памяти (в ГБ)
+                    color: Цвет устройства
+        """
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    def __add__(self, other):
+        """Сложение только объектов Smartphone"""
+        if not isinstance(other, Smartphone):
+            raise TypeError("Можно складывать только смартфоны")
+        return super().__add__(other)
+
+class LawnGrass(Product):
+    """Класс для представления газонной травы"""
+
+    def __init__(self, name: str, description: str, price: float, quantity: int,
+                 country: str, germination_period: str, color: str):
+        """
+                Инициализация экземпляра класса LawnGrass
+
+                Args:
+                    country: Страна-производитель
+                    germination_period: Срок прорастания
+                    color: Цвет травы
+                """
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+    def __add__(self, other):
+        """Сложение только объектов LawnGrass"""
+        if not isinstance(other, LawnGrass):
+            raise TypeError("Можно складывать только газонную траву")
+        return super().__add__(other)

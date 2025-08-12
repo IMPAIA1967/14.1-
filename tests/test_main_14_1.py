@@ -1,6 +1,6 @@
 
 
-from src.main_14_1_product import Product
+from src.main_14_1_product import Product, Smartphone, LawnGrass
 from src.main_14_1_category import Category
 
 
@@ -113,3 +113,45 @@ class TestCategoryAdditional:
 
         # 3. Проверяем строковое представление
         assert str(category) == "Электроника, количество продуктов: 15 шт."
+
+
+def test_smartphone_creation():
+    """Проверка создания смартфона"""
+    phone = Smartphone("iPhone", "Good phone", 100000, 5, 95.5, "15", 256, "Black")
+    assert phone.name == "iPhone"
+    assert phone.price == 100000
+    assert phone.memory == 256
+
+
+def test_smartphone_addition():
+    """Проверка сложения смартфонов"""
+    phone1 = Smartphone("iPhone", "Phone", 100000, 2, 95.0, "15", 256, "Black")
+    phone2 = Smartphone("Samsung", "Phone", 80000, 3, 92.0, "S23", 128, "White")
+    assert phone1 + phone2 == (100000 * 2 + 80000 * 3)
+
+
+def test_lawn_grass_creation():
+    """Проверка создания газонной травы"""
+    grass = LawnGrass("Premium", "Green grass", 500, 10, "USA", "14 days", "Green")
+    assert grass.name == "Premium"
+    assert grass.price == 500
+    assert grass.country == "USA"
+
+
+def test_lawn_grass_addition():
+    """Проверка сложения газонной травы"""
+    grass1 = LawnGrass("Grass1", "Grass", 500, 5, "USA", "14 days", "Green")
+    grass2 = LawnGrass("Grass2", "Grass", 300, 10, "Russia", "7 days", "Dark")
+    assert grass1 + grass2 == (500 * 5 + 300 * 10)
+
+
+def test_invalid_addition():
+    """Проверка ошибки при сложении разных типов"""
+    phone = Smartphone("iPhone", "Phone", 100000, 2, 95.0, "15", 256, "Black")
+    grass = LawnGrass("Grass", "Green", 500, 10, "USA", "14 days", "Green")
+
+    try:
+        phone + grass
+        assert False, "Должна была возникнуть ошибка TypeError"
+    except TypeError:
+        assert True
