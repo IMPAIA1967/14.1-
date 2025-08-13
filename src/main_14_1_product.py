@@ -26,9 +26,9 @@ class Product:
         Сложение товаров с проверкой совместимости типов.
         Возвращает общую стоимость товаров одного типа
         """
-        if not isinstance(other, self.__class__):
+        if type(other) != type(self):
             raise TypeError(
-                f"Нельзя складывать товары разных типов: {self.__class__.__name__} и {other.__class__.__name__}")
+                f"Нельзя складывать товары разных типов: {type(self).__name__} и {type(other).__name__}")
         return (self.price * self.quantity) + (other.price * other.quantity)
 
     def __str__(self):
@@ -107,7 +107,7 @@ class Smartphone(Product):
 
     def __add__(self, other):
         """Сложение только объектов Smartphone"""
-        if not isinstance(other, Smartphone):
+        if type(other) != type(self):
             raise TypeError("Можно складывать только смартфоны")
         return super().__add__(other)
 
@@ -131,6 +131,6 @@ class LawnGrass(Product):
 
     def __add__(self, other):
         """Сложение только объектов LawnGrass"""
-        if not isinstance(other, LawnGrass):
+        if type(other) != type(self):
             raise TypeError("Можно складывать только газонную траву")
         return super().__add__(other)
