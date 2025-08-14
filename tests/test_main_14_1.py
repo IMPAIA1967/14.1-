@@ -155,3 +155,58 @@ def test_invalid_addition():
         assert False, "Должна была возникнуть ошибка TypeError"
     except TypeError:
         assert True
+
+
+def test_product_new_product_method():
+    """Тестирование фабричного метода new_product"""
+    product_data = {
+        'name': 'Новый продукт',
+        'description': 'Тестовое описание',
+        'price': 1500.0,
+        'quantity': 3
+    }
+    product = Product.new_product(product_data)
+
+    assert product.name == 'Новый продукт'
+    assert product.description == 'Тестовое описание'
+    assert product.price == 1500.0
+    assert product.quantity == 3
+
+
+def test_smartphone_repr():
+    """Тестирование строкового представления смартфона"""
+    phone = Smartphone("iPhone", "Phone", 100000, 2, 95.0, "15", 256, "Black")
+    assert "iPhone" in str(phone)
+    assert "100000" in str(phone)
+    assert "2" in str(phone)
+
+
+def test_lawn_grass_repr():
+    """Тестирование строкового представления газонной травы"""
+    grass = LawnGrass("Grass", "Green", 500, 10, "USA", "14 days", "Green")
+    assert "Grass" in str(grass)
+    assert "500" in str(grass)
+    assert "10" in str(grass)
+
+
+
+def test_product_price_decrease_with_confirmation(monkeypatch):
+    """Тестирование уменьшения цены с подтверждением"""
+    # Эмулируем ввод 'y' для подтверждения
+    monkeypatch.setattr('builtins.input', lambda _: 'y')
+
+    product = Product("Телефон", "Описание", 1000, 5)
+    product.price = 900
+
+    assert product.price == 900
+
+
+def test_product_price_decrease_without_confirmation(monkeypatch):
+    """Тестирование уменьшения цены без подтверждения"""
+    # Эмулируем ввод 'n' для отказа
+    monkeypatch.setattr('builtins.input', lambda _: 'n')
+
+    product = Product("Телефон", "Описание", 1000, 5)
+    product.price = 900
+
+    assert product.price == 1000  # Цена должна остаться прежней
