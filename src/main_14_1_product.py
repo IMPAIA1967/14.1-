@@ -1,12 +1,61 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class BaseProduct(ABC):
+    """Абстрактный базовый класс для всех продуктов"""
+
+    @abstractmethod
+    def __init__(self, name: str, description: str, price: float, quantity: int):
+        pass
+
+    @abstractmethod
+    def __str__(self) -> str:
+        """Строковое представление продукта"""
+        pass
+
+    @abstractmethod
+    def __add__(self, other) -> float:
+        """Сложение продуктов (стоимость всех товаров на складе)"""
+        pass
+
+    @property
+    @abstractmethod
+    def price(self) -> float:
+        """Получение текущей цены товара"""
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, value) -> None:
+        """Установка новой цены товара с проверками"""
+        pass
+
+    @classmethod
+    @abstractmethod
+    def new_product(cls, product_data: dict):
+        """Создание нового продукта из словаря с параметрами"""
+        pass
+
+class Mixin:
+    """Миксин для логирования создания объектов."""
+
+    def __init__(self, *args, **kwargs):
+        print(f"Создан объект класса {self.__class__.__name__} с параметрами:")
+        print(f"Позиционные аргументы: {args}")
+        print(f"Именованные аргументы: {kwargs}")
+        # Передаем управление следующему классу в цепочке наследования
+
+
+
+
+class Product(Mixin, BaseProduct):
     """Класс для представления товара в магазине."""
     name: str
     description: str
     price: float
     quantity: int
 
-    def __init__(self, name: str, description: str,
-                 price: float, quantity: int):
+    def __init__(self, name: str, description: str, price: float, quantity: int, *args, **kwargs):
         """
         Инициализация экземпляра класса Product.
 
@@ -16,10 +65,13 @@ class Product:
             price: Цена товара
             quantity: Количество товара
         """
+        super().__init__(*args, **kwargs)
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+
+        super().__init__(name, description, price, quantity)
 
     def __add__(self, other):
         """
@@ -34,10 +86,6 @@ class Product:
     def __str__(self):
         """Строковое представление продукта."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
-
-    def __add__(self, other):
-        """Вычисление стоимости всех товаров на складе."""
-        return (self.price * self.quantity) + (other.price * other.quantity)
 
     @property
     def price(self):
@@ -134,3 +182,12 @@ class LawnGrass(Product):
         if type(other) != type(self):
             raise TypeError("Можно складывать только газонную траву")
         return super().__add__(other)
+
+    def __repr__(self):
+        """
+            Официальное строковое представление объекта
+
+            Возвращает строку вида:
+                Класс(name='название', price=цена, quantity=количество)
+        """
+        return f"{self.__class__.__name__}(name='{self.name}', price={self.price}, quantity={self.quantity})"
