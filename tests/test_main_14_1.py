@@ -1,4 +1,4 @@
-
+import pytest
 
 from src.main_14_1_product import Product, Smartphone, LawnGrass
 from src.main_14_1_category import Category
@@ -175,7 +175,8 @@ def test_product_new_product_method():
 
 def test_smartphone_repr():
     """Тестирование строкового представления смартфона"""
-    phone = Smartphone("iPhone", "Phone", 100000, 2, 95.0, "15", 256, "Black")
+    phone = Smartphone("iPhone", "Phone", 100000, 2, 95.0,
+                       "15", 256, "Black")
     assert "iPhone" in str(phone)
     assert "100000" in str(phone)
     assert "2" in str(phone)
@@ -210,3 +211,62 @@ def test_product_price_decrease_without_confirmation(monkeypatch):
     product.price = 900
 
     assert product.price == 1000  # Цена должна остаться прежней
+
+
+class TestProductZeroQuantity:
+    """Тесты для проверки нулевого количества товара"""
+
+    def test_product_creation_with_zero_quantity_raises_error(self):
+        """Тест, что создание товара с quantity=0 вызывает ValueError"""
+        with pytest.raises(ValueError) as exc_info:
+            Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+
+        assert "Товар с нулевым количеством не может быть добавлен" in str(exc_info.value)
+
+    def test_product_creation_with_positive_quantity_success(self):
+        """Тест, что создание товара с quantity>0 работает нормально"""
+        product = Product("Хороший товар", "Описание", 1000.0, 1)
+        assert product.quantity == 1
+        assert product.name == "Хороший товар"
+
+    def test_product_creation_with_multiple_quantity_success(self):
+        """Тест, что создание товара с quantity>1 работает нормально"""
+        product = Product("Товар", "Описание", 500.0, 10)
+        assert product.quantity == 10
+
+
+class TestCategoryMiddlePrice:
+    """Тесты для метода middle_price() класса Category"""
+
+    def setup_method(self):
+        """Настройка перед каждым тестом"""
+        self.product1 = Product("Товар1", "Описание1", 100.0, 2)
+        self.product2 = Product("Товар2", "Описание2", 200.0, 3)
+        self.product3 = Product("Товар3", "Описание3", 300.0, 1)
+
+    def test_middle_price_with_products(self):
+        """Тест средней цены в категории с товарами"""
+        category = Category("Тест", "Описание",
+                            [self.product1, self.product2, self.product3])
+
+        result = category.middle_price()
+        expected = (100.0 + 200.0 + 300.0) / 3  # 600 / 3 = 200.0
+
+        assert result == expected
+        assert isinstance(result, float)
+
+    def test_middle_price_empty_category(self):
+        """Тест средней цены в пустой категории (возвращает 0)"""
+        category = Category("Пустая", "Нет товаров", [])
+
+        result = category.middle_price()
+
+        assert result == 0
+
+    def test_error_message_content(self):
+        """Тест содержания сообщения об ошибке"""
+        try:
+            Product("Тест", "Тест", 100.0, 0)
+            assert False, "Должно было возникнуть исключение"
+        except ValueError as e:
+            assert "Товар с нулевым количеством не может быть добавлен"

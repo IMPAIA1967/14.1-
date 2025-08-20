@@ -65,11 +65,15 @@ class Product(Mixin, BaseProduct):
             price: Цена товара
             quantity: Количество товара
         """
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
+
         super().__init__(*args, **kwargs)
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+
 
         super().__init__(name, description, price, quantity)
 
